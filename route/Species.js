@@ -4,6 +4,8 @@ const SpeciesController = require("../controllers/Species");
 // Get All Species
 router.get("/", SpeciesController.getAllSpecies);
 
+router.get("/:id", SpeciesController.getSpeciesById);
+
 // Create Species
 router.post("/create", SpeciesController.createSpecies);
 

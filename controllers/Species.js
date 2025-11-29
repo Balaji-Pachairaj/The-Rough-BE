@@ -9,10 +9,23 @@ const getAllSpecies = async (req, res, next) => {
   }
 };
 
+const getSpeciesById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const species = await Species.findById(id);
+    if (!species) {
+      return res.status(404).json({ error: "Species not found" });
+    }
+    res.status(200).json(species);
+  } catch (err) {
+    res.status(500).json({ error: "Server Error" });
+  }
+};
+
 const createSpecies = async (req, res, next) => {
   try {
-    const { name, sub_spcies } = req.body;
-    const newSpecies = new Species({ name, sub_spcies });
+    const { name, sub_species } = req.body;
+    const newSpecies = new Species({ name, sub_species });
     const savedSpecies = await newSpecies.save();
     res.status(201).json(savedSpecies);
   } catch (err) {
@@ -23,7 +36,7 @@ const createSpecies = async (req, res, next) => {
 const updateSpecies = async (req, res, next) => {
   try {
     const { id } = req.params;
-    console.log(req.body, id);  
+    console.log(req.body, id);
     const updatedSpecies = await Species.findByIdAndUpdate(id, req.body, {
       new: true,
     });
@@ -52,6 +65,7 @@ const deleteSpecies = async (req, res, next) => {
 
 module.exports = {
   getAllSpecies,
+  getSpeciesById,
   createSpecies,
   updateSpecies,
   deleteSpecies,
